@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>User page</title>
+
+
+</head>
+
+<body>
+    <span>Username: </span>
+    <h2 th:text="${user.getUsername()}">username</h2>
+    <span>lastname: </span>
+    <h2 th:text="${user.getLastname()}">lastname</h2>
+<div><a href="/admin/users">user's list</a></div>
+<div><a href="/logout">logout</a></div>
+</body>
+</html>
