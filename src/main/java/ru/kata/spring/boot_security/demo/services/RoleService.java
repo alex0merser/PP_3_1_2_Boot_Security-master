@@ -11,4 +11,5 @@ public interface RoleService {
 
     void save(Role role);
 
+    Role getRoleById(int roleId);
 }

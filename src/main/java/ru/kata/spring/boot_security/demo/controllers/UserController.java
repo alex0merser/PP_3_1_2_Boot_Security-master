@@ -22,7 +22,7 @@ public class UserController {
     public String viewUser(Principal principal, Model model) {
         User user = userService.findByUsername(principal.getName());
         model.addAttribute("user", user);
-        return "index";
+        return "user-page";
     }
 
 }

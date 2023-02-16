@@ -10,6 +10,7 @@ import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
 import java.security.Principal;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -30,60 +31,35 @@ public class AdminController {
     @GetMapping
     public String viewUser(Principal principal, Model model) {
         model.addAttribute("user", userService.findByUsername(principal.getName()));
-        return "index";
-    }
-
-    @GetMapping("/users")
-    public String findAll(Model model) {
-        List<User> users = userService.findAll();
-        model.addAttribute("users", users);
-        return "user-list";
-    }
-
-
-    @GetMapping("/user-create")
-    public String addUser(@ModelAttribute("adduser") User user, Model model) {
+        model.addAttribute("users", userService.findAll());
         model.addAttribute("roles", roleService.findAll());
-        return "user-create";
+        return "admin-panel";
     }
 
-    @PostMapping("/user-create")
-    public String createUser(@ModelAttribute("adduser") User user,
+
+    @PostMapping
+    public String createUser(@ModelAttribute("user") User user,
                              @RequestParam("roles") Set<Role> roles) {
         user.setRoles(roles);
         userService.saveUser(user);
-        return "redirect:/admin/users";
+        return "redirect:/admin";
     }
 
-
-    @GetMapping("/user-delete/{id}")
-    public String deleteUser(@PathVariable("id") Long id) {
-        userService.deleteById(id);
-        return "redirect:/admin/users";
+    @DeleteMapping
+    public String deleteUser(@ModelAttribute("user") User user) {
+        userService.deleteById(user.getId());
+        return "redirect:/admin";
     }
 
-
-    @GetMapping("/user-update/{id}")
-    public String updateUserForm(Model model, @PathVariable("id") Long id) {
-        User user = userService.findById(id);
-        model.addAttribute("adduser", user);
-        model.addAttribute("roles", roleService.findAll());
-        return "user-update";
-    }
-
-    @PostMapping("/user-update")
-    public String updateUser(@RequestParam("roles") Set<Role> roles,
-                             @RequestParam("username") String username,
-                             @RequestParam("lastname") String lastname,
-                             @RequestParam("password") String password,
-                             @RequestParam Long id) {
-        User user = userService.findById(id);
+    @PatchMapping
+    public String updateUser(@ModelAttribute("user") User user, @ModelAttribute("roles") List<Integer> rolesId) {
+        Set<Role> roles = new HashSet<>();
+        for (int roleId : rolesId) {
+            roles.add(roleService.getRoleById(roleId));
+        }
         user.setRoles(roles);
-        user.setUsername(username);
-        user.setLastname(lastname);
-        user.setPassword(password);
         userService.saveUser(user);
-        return "redirect:/admin/users";
+        return "redirect:/admin";
     }
 
 }

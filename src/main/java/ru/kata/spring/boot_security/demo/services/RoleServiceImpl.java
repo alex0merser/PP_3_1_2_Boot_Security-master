@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Service
-
 public class RoleServiceImpl implements RoleService {
 
     private final RoleRepository roleRepository;
@@ -25,6 +24,8 @@ public class RoleServiceImpl implements RoleService {
     public Role findByName(String name) {
         return roleRepository.findByName(name);
     }
+
+    public Role getRoleById(int id) {return roleRepository.getById(id);}
 
     @Transactional
     public void save(Role role) {
