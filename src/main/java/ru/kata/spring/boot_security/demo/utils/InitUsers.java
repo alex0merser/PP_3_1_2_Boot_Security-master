@@ -34,7 +34,6 @@ public class InitUsers {
         user1.addRole(roleService.findByName("ROLE_USER"));
         user2.addRole(roleService.findByName("ROLE_ADMIN"));
 
-
         userService.saveUser(user1);
         userService.saveUser(user2);
 

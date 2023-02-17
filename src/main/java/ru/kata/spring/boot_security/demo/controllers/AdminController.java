@@ -10,8 +10,6 @@ import ru.kata.spring.boot_security.demo.services.RoleService;
 import ru.kata.spring.boot_security.demo.services.UserService;
 
 import java.security.Principal;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -29,11 +27,19 @@ public class AdminController {
     }
 
     @GetMapping
-    public String viewUser(Principal principal, Model model) {
+    public String viewAdminPanel(Principal principal, Model model) {
         model.addAttribute("user", userService.findByUsername(principal.getName()));
         model.addAttribute("users", userService.findAll());
         model.addAttribute("roles", roleService.findAll());
         return "admin-panel";
+    }
+
+    @GetMapping("/user-page")
+    public String viewAdminPage(Principal principal, Model model) {
+        model.addAttribute("user", userService.findByUsername(principal.getName()));
+        model.addAttribute("users", userService.findAll());
+        model.addAttribute("roles", roleService.findAll());
+        return "admin-user-page";
     }
 
 
@@ -52,11 +58,8 @@ public class AdminController {
     }
 
     @PatchMapping
-    public String updateUser(@ModelAttribute("user") User user, @ModelAttribute("roles") List<Integer> rolesId) {
-        Set<Role> roles = new HashSet<>();
-        for (int roleId : rolesId) {
-            roles.add(roleService.getRoleById(roleId));
-        }
+    public String updateUser(@ModelAttribute("user") User user,
+                             @RequestParam("roles") Set<Role> roles) {
         user.setRoles(roles);
         userService.saveUser(user);
         return "redirect:/admin";
