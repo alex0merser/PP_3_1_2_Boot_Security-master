@@ -144,8 +144,8 @@ function editUser() {
             })
         }
 
-        fetch("http://localhost:8080/api/admin/" + editForm.id.value, {
-            method: 'POST',
+        fetch("http://localhost:8080/api/admin/", {
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },

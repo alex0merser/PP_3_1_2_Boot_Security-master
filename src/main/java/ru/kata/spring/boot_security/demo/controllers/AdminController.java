@@ -52,7 +52,7 @@ public class AdminController {
 
     }
 
-    @PostMapping("/admin/{id}")
+    @PutMapping("/admin")
     public ResponseEntity<User> updateUser(@RequestBody User user) {
         userService.updateUser(user);
         return new ResponseEntity<>(HttpStatus.OK);
